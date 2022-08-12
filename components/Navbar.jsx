@@ -51,7 +51,7 @@ export default function Navbar() {
     },
   ];
   return (
-    <div className="w-full fixed top-0 left-0 shadow-md border-b border-black h-20 py-3 absolute">
+    <div className="w-full fixed top-0 left-0 shadow-md border-b border-black h-20 py-3 absolute ">
       <div className=" flex items-center justify-between">
         {" "}
         <h1 className="text-3xl px-20">Staking App</h1>
