@@ -10,6 +10,10 @@ import { ethers } from "ethers";
 
 export default function Contract() {
   const [stakersN, setStakersN] = useState([]);
+  const [thresholdA, setThreshold] = useState(0);
+  const [totalStaked, setTotalstaked] = useState(0);
+  const [balanceAmount, setBalance] = useState(0);
+  const [deadlineT, setDeadline] = useState("");
   const router = useRouter();
   const { contractAddress } = router.query;
   const { Moralis, authenticate, isAuthenticated, isWeb3Enabled } =
@@ -88,16 +92,36 @@ export default function Contract() {
       address: "222",
     },
   });
+  const viewFunctionResults = async () => {
+    const getThreshold = (await threshold()).toString();
+    const getTotalstake = (await totalStake()).toString();
+    const deadline = (await timeLeft()).toString();
+    const stakersbalance = (await stakersBalance()).toString();
+    setThreshold(getThreshold);
+    setTotalstaked(getTotalstake);
+    setBalance(stakersbalance);
+  };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if(isAuthenticated || isWeb3Enabled) {
+        viewFunctionResults()
+    }
+  }, [isAuthenticated, isWeb3Enabled]);
 
   return (
-    <>
+    <div>
       <Navbar />
-      <SideBar />
       <div>
-        <div className="flex h-screen"></div>
+        <SideBar />
+        <div
+          className="flex h-screen w-2/3 ml-auto mr-16"
+          style={{ marginTop: "-870px" }}
+        >
+          <div className="mt-16 text-center pl-24 pr-24">
+            <p>eerr</p>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }

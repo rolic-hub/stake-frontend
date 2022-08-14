@@ -1,8 +1,9 @@
 import { Button, useNotification } from "@web3uikit/core";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useWeb3Contract, useMoralis } from "react-moralis";
 import Abi from "../constants/Abi/stakeFactory.json";
-import contractAdrresses from "../constants/contractAddresses/stakeFactory";
+import { contractAdrresses } from "../constants/contractAddresses/stakeFactory";
 import { useState, useEffect } from "react";
 
 export default function SideBar() {
@@ -15,9 +16,10 @@ export default function SideBar() {
     chainId: chainIdHex,
   } = useMoralis();
   const chainId = parseInt(chainIdHex);
-  const addressses = contractAdrresses[chainId]["contract"];
-  //const addressses = "0xd79b1585531e57A8d239ADc5262398279b4F5c91";
+  const addressses = contractAdrresses[4].contract;
+
   const dispatch = useNotification();
+  const router = useRouter();
 
   const loadContract = async (stakeFactoryAddress) => {
     //await Moralis.authenticate;
@@ -26,7 +28,7 @@ export default function SideBar() {
       contractAddress: stakeFactoryAddress, //
       functionName: "getNoofStakers",
     });
-    let stakeAddress = [];
+    let stakeAddressArray = [];
     const noOfStakeAddress = getNoofStakeAddress.toString();
     for (let index = 0; index < noOfStakeAddress; index++) {
       const stakeAddresses = await Moralis.executeFunction({
@@ -39,14 +41,15 @@ export default function SideBar() {
       });
 
       const stakeAddressB = stakeAddresses.toString();
-      stakeAddress.push(stakeAddressB);
-      setStakeContract(stakeAddress);
+      stakeAddressArray.push(stakeAddressB);
+      setStakeContract(stakeAddressArray);
+      console.log(stakeAddressArray);
     }
   };
 
   const {
     runContractFunction: createStakeContract,
-    data,
+    data: tx,
     isFetching,
   } = useWeb3Contract({
     abi: Abi.abi,
@@ -77,7 +80,7 @@ export default function SideBar() {
   const handleSucess = async () => {
     await tx.wait(1);
     handleNewNotification();
-    await loadContract();
+    await loadContract(addressses);
   };
 
   useEffect(() => {
@@ -89,8 +92,7 @@ export default function SideBar() {
     } else {
       login();
     }
-    console.log(chainIdHex);
-  }, []);
+  }, [isAuthenticated, isWeb3Enabled, ]);
   return (
     <>
       <div className="flex mt-24">
@@ -117,7 +119,7 @@ export default function SideBar() {
             }}
           />
 
-          <div className="mt-10  ">
+          <div className="mt-10">
             <h2
               className="bg-slate-500 border-b border-black text-2xl flex flex-row justify-center w-80 leading-normal items-center hover:bg-slate-700"
               style={{ marginLeft: "-15px" }}
@@ -125,10 +127,14 @@ export default function SideBar() {
               Deployed Stake Contracts
             </h2>
             {isAuthenticated || isWeb3Enabled ? (
-              <div>
-                {stakeContract.map((address) => {
-                  <Link href={`/stake-contract/${address}`}>{address}</Link>;
-                })}
+              <div className="p-3 pt-5">
+                {stakeContract?.map((address) => (
+                  <div>
+                    <Link href={`/stake-contract/${address}`}>
+                      <a className="text-xl font-bold hover:text-sky-900">{address.slice(0,10)}....{address.slice(32,42)}</a>
+                    </Link>
+                  </div>
+                ))}
               </div>
             ) : (
               <div>
