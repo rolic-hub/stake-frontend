@@ -5,49 +5,24 @@ import { ConnectButton } from "@web3uikit/web3";
 export default function Navbar() {
   const options = [
     {
-      id: "discord",
-      label: "Discord",
+      id: "rinkeby",
+      label: "Rinkeby",
       //prefix: <SvgDiscord fill="#68738D" />,
     },
     {
-      id: "emoji",
-      label: "Emoji",
+      id: "kovan",
+      label: "kovan",
       prefix: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
     },
     {
-      id: "txt",
-      label: "TXT",
+      id: "hardhat",
+      label: "Hardhat",
       prefix: "TXT",
     },
     {
-      id: "dapp",
-      label: "dApp",
+      id: "goerli",
+      label: "Goerli",
       //prefix: <SvgServer fill="#68738D" />,
-    },
-    {
-      id: "discord",
-      label: "Discord",
-      //prefix: <SvgDiscord fill="#68738D" />,
-    },
-    {
-      id: "discord",
-      label: "Discord",
-      //prefix: <SvgDiscord fill="#68738D" />,
-    },
-    {
-      id: "discord",
-      label: "Discord",
-      //prefix: <SvgDiscord fill="#68738D" />,
-    },
-    {
-      id: "discord",
-      label: "Discord",
-      //prefix: <SvgDiscord fill="#68738D" />,
-    },
-    {
-      id: "discord",
-      label: "Discord",
-      //prefix: <SvgDiscord fill="#68738D" />,
     },
   ];
   return (
@@ -56,14 +31,14 @@ export default function Navbar() {
         {" "}
         <h1 className="text-3xl px-20">Staking App</h1>
         <Select
-          style={{ marginLeft: "550px", marginTop:"10px" }}
-          //label="Label Text"
+          style={{ marginLeft: "550px", marginTop: "10px" }}
+          label="Select Chain"
           onBlurTraditional={function noRefCheck() {}}
           onChange={function noRefCheck() {}}
           onChangeTraditional={function noRefCheck() {}}
           options={options}
         />
-        <ConnectButton style={{marginRight:"100px", marginTop:"20px"}} />
+        <ConnectButton style={{ marginRight: "100px", marginTop: "20px" }} />
       </div>
     </div>
   );
