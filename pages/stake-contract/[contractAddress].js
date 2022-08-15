@@ -6,20 +6,25 @@ import { useWeb3Contract, useMoralis } from "react-moralis";
 //import Abi from "../../constants/Abi/stakeFactory.json";
 import AbiStake from "../../constants/Abi/stake.json";
 import { ethers } from "ethers";
-import { Button, Input, Table, Avatar, useNotification } from "@web3uikit/core";
+import { Button, Input, Table, useNotification } from "@web3uikit/core";
 import { Blockie } from "@web3uikit/web3";
+
+
 export default function Contract() {
   const [stakersN, setStakersN] = useState([]);
   const [thresholdA, setThreshold] = useState(0);
   const [totalStaked, setTotalstaked] = useState(0);
-  const [balanceAmount, setBalance] = useState(0);
-  const [deadlineT, setDeadline] = useState("");
+  const [deadlineT, setDeadline] = useState({
+    dy: "00",
+    hr: "00",
+    mins: "00",
+    secs: "00",
+  });
   const [depositInput, setDepositInput] = useState(0);
   const [stakeSet, setStakeset] = useState(null);
   const [stakeApp, setStakeApp] = useState("");
   const [cssStakestate, setCssstate] = useState("font-bold");
   const [stakersBalance, setStakersbalance] = useState([]);
-
   const router = useRouter();
   const { contractAddress } = router.query;
   const { Moralis, authenticate, isAuthenticated, isWeb3Enabled } =
@@ -84,11 +89,9 @@ export default function Contract() {
       }
 
       setStakersN(stakersArray);
-      console.log(stakersArray);
-
       let balanceArray = [];
 
-      stakersArray.forEach(async (element) => {
+      stakersArray.map(async (element) => {
         const balanceStaker = await Moralis.executeFunction({
           functionName: "getStakersBalance",
           contractAddress: contractA,
@@ -97,10 +100,14 @@ export default function Contract() {
             _staker: element,
           },
         });
-        balanceArray.push(balanceStaker.toString());
+        const balanceString = balanceStaker.toString();
+        if (balanceArray.includes(balanceString)) {
+          console.log("already added");
+        } else {
+          balanceArray.push(balanceString);
+        }
       });
       setStakersbalance(balanceArray);
-      console.log(balanceArray);
     }
   };
 
@@ -147,14 +154,38 @@ export default function Contract() {
     const deadline = (await timeLeft()).toString();
     const _stakeStake = (await stakeState()).toString();
 
-    //const stakersbalance = (await stakersBalance()).toString();
     setThreshold(getThreshold);
     setTotalstaked(getTotalstake);
-    //setBalance(stakersbalance);
-    setDeadline(deadline);
     setStakeset(_stakeStake);
     stateOfstake();
+
+    const now = new Date();
+    const nowInSeconds = now.getTime();
+    const timeR = deadline * 1000;
+    const finalT = new Date(nowInSeconds + timeR);
+    const finalTseconds = finalT.getTime();
+
+    const setTimer = () => {
+      const intervalno = setInterval(function () {
+        const distance = finalTseconds - nowInSeconds;
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        setDeadline({ dy: days, hr: hours, mins: minutes, secs: seconds });
+        if (distance < 0) {
+          clearInterval(intervalno);
+
+          setDeadline({ dy: "00", hr: "00", mins: "00", secs: "00" });
+        }
+      }, 1000);
+    };
+    setTimer();
   };
+
   const stateOfstake = () => {
     if (stakeSet == 0) {
       setStakeApp("Stake is Closed");
@@ -190,7 +221,13 @@ export default function Contract() {
           {isAuthenticated || isWeb3Enabled ? (
             <div className="mt-28 text-center pl-24 pr-24">
               <p className={cssStakestate}>{stakeApp}</p>
-              <p className="mt-8 font-bold">Left</p>
+              <p className="mt-8 font-bold">
+                <span>
+                  {deadlineT.dy}d {deadlineT.hr}hr {deadlineT.mins}m{" "}
+                  {deadlineT.secs}s
+                </span>{" "}
+                Left
+              </p>
               <p className="mt-8 ml-4 text-xl">
                 {ethers.utils.formatUnits(totalStaked, 18)} Eth /{" "}
                 {ethers.utils.formatUnits(thresholdA, 18)} Eth
@@ -274,7 +311,10 @@ export default function Contract() {
                       </span>,
                     ],
                   ]}
-                  header={[<span>Address of staker</span>, <span>Amount Staked</span>]}
+                  header={[
+                    <span>Address of staker</span>,
+                    <span>Amount Staked</span>,
+                  ]}
                   justifyCellItems="center"
                   isColumnSortable={[false, true]}
                   maxPages={2}

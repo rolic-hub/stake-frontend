@@ -130,7 +130,7 @@ export default function SideBar() {
               <div className="p-3 pt-5">
                 {stakeContract?.map((address) => (
                   <div key={address}>
-                    <Link href={`/stake-contract/${address}`}>
+                    <Link className="p-2" href={`/stake-contract/${address}`}>
                       <a className="text-xl font-bold hover:text-sky-900">{address.slice(0,10)}....{address.slice(32,42)}</a>
                     </Link>
                   </div>
