@@ -6,7 +6,12 @@ export const contractAdrresses = {
   },
   4: {
     name: "Rinkeby",
-    contract: "0x9AC6d219F0F2296dC679D714A827d24B71fE7056",
+    contract: "0x0B67366082a49B00B40f5371C3237843a0DA0585",
     chainId: 4,
+  },
+  31337: {
+    name: "Hardhat",
+    contract: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    chainId: 31337,
   },
 };

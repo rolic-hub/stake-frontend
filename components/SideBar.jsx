@@ -16,7 +16,7 @@ export default function SideBar() {
     chainId: chainIdHex,
   } = useMoralis();
   const chainId = parseInt(chainIdHex);
-  const addressses = contractAdrresses[4].contract;
+  const addressses = contractAdrresses[31337].contract;
 
   const dispatch = useNotification();
   const router = useRouter();
@@ -43,7 +43,7 @@ export default function SideBar() {
       const stakeAddressB = stakeAddresses.toString();
       stakeAddressArray.push(stakeAddressB);
       setStakeContract(stakeAddressArray);
-      console.log(stakeAddressArray);
+      //console.log(stakeAddressArray);
     }
   };
 
@@ -70,14 +70,14 @@ export default function SideBar() {
   const handleNewNotification = () => {
     dispatch({
       type: "info",
-      message: "Transaction Complete!",
+      message: "Created new stake contract",
       title: "Transaction Notification",
       position: "topR",
       icon: "bell",
     });
   };
 
-  const handleSucess = async () => {
+  const handleSucess = async (tx) => {
     await tx.wait(1);
     handleNewNotification();
     await loadContract(addressses);
@@ -129,7 +129,7 @@ export default function SideBar() {
             {isAuthenticated || isWeb3Enabled ? (
               <div className="p-3 pt-5">
                 {stakeContract?.map((address) => (
-                  <div>
+                  <div key={address}>
                     <Link href={`/stake-contract/${address}`}>
                       <a className="text-xl font-bold hover:text-sky-900">{address.slice(0,10)}....{address.slice(32,42)}</a>
                     </Link>

@@ -26,19 +26,24 @@ export default function Navbar() {
     },
   ];
   return (
-    <div className="w-full fixed top-0 left-0 shadow-md border-b border-black h-24 py-3 absolute ">
-      <div className=" flex items-center justify-between">
+    <div className="lg:w-full md:w-full fixed top-0 left-0 shadow-md border-b border-black h-24 py-3 absolute ">
+      <div className="flex flex-row items-center justify-between">
         {" "}
         <h1 className="text-3xl px-20">Staking App</h1>
-        <Select
-          style={{ marginLeft: "550px", marginTop: "10px" }}
-          label="Select Chain"
-          onBlurTraditional={function noRefCheck() {}}
-          onChange={function noRefCheck() {}}
-          onChangeTraditional={function noRefCheck() {}}
-          options={options}
-        />
-        <ConnectButton style={{ marginRight: "100px", marginTop: "20px" }} />
+        <div className="mt-5 lg:ml-96 md:16">
+          <Select
+            //style={{ marginLeft: "550px", marginTop: "10px" }}
+            label="Select Chain"
+            onBlurTraditional={function noRefCheck() {}}
+            onChange={function noRefCheck() {}}
+            onChangeTraditional={function noRefCheck() {}}
+            options={options}
+          />
+        </div>
+        <div className="mt-8 lg:mr-16 md:mr-16">
+             <ConnectButton  />
+        </div>
+       
       </div>
     </div>
   );

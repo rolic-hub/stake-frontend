@@ -5,7 +5,7 @@ export default function Layout() {
   return (
     <div>
       <SideBar />
-      <div className="flex h-screen w-2/3 ml-auto mr-16 " style={{marginTop:"-870px"}} >
+      <div className="flex h-screen lg:w-2/3 md:w-1/2 ml-auto mr-16 " style={{marginTop:"-870px"}} >
         <div className="mt-16 text-center pl-24 pr-24">
           <h1 className="text-2xl p-7 font-bold">About</h1>
           <p>
