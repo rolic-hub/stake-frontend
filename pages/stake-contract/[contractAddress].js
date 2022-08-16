@@ -8,7 +8,7 @@ import AbiStake from "../../constants/Abi/stake.json";
 import { ethers } from "ethers";
 import { Button, Input, Table, useNotification } from "@web3uikit/core";
 import { Blockie } from "@web3uikit/web3";
-
+import { ArrowCircleLeft } from "@web3uikit/icons";
 
 export default function Contract() {
   const [stakersN, setStakersN] = useState([]);
@@ -198,6 +198,9 @@ export default function Contract() {
       setCssstate("font-bold text-blue-600");
     }
   };
+  const moveBack = () => {
+    router.push('/')
+  }
 
   useEffect(() => {
     if (isAuthenticated || isWeb3Enabled) {
@@ -217,7 +220,8 @@ export default function Contract() {
         <div
           className="flex h-screen w-2/3 ml-auto"
           style={{ marginTop: "-870px" }}
-        >
+        >  
+          <ArrowCircleLeft onClick={moveBack} style={{marginTop:"70px"}} fontSize="50px" />
           {isAuthenticated || isWeb3Enabled ? (
             <div className="mt-28 text-center pl-24 pr-24">
               <p className={cssStakestate}>{stakeApp}</p>
@@ -288,39 +292,43 @@ export default function Contract() {
                 }}
               />
               <div className="mt-12 ml-8">
-                <Table
-                  columnsConfig="250px 1fr"
-                  data={[
-                    [
-                      <span>
-                        {stakersN.map((address) => (
-                          <p className="flex p-3 ">
-                            <Blockie seed={address} />
-                            <p className="ml-4">
-                              {address.slice(0, 5)}...{address.slice(37, 42)}
+                {stakersN.length > 0 ? (
+                  <Table
+                    columnsConfig="250px 1fr"
+                    data={[
+                      [
+                        <span>
+                          {stakersN.map((address) => (
+                            <p className="flex p-3 ">
+                              <Blockie seed={address} />
+                              <p className="ml-4">
+                                {address.slice(0, 5)}...{address.slice(37, 42)}
+                              </p>
                             </p>
-                          </p>
-                        ))}
-                      </span>,
-                      <span>
-                        {stakersBalance.map((balance) => (
-                          <p className="p-3">
-                            {ethers.utils.formatUnits(balance, 18)}
-                          </p>
-                        ))}
-                      </span>,
-                    ],
-                  ]}
-                  header={[
-                    <span>Address of staker</span>,
-                    <span>Amount Staked</span>,
-                  ]}
-                  justifyCellItems="center"
-                  isColumnSortable={[false, true]}
-                  maxPages={2}
-                  onRowClick={function noRefCheck() {}}
-                  pageSize={3}
-                />
+                          ))}
+                        </span>,
+                        <span>
+                          {stakersBalance.map((balance) => (
+                            <p className="p-3">
+                              {ethers.utils.formatUnits(balance, 18)}
+                            </p>
+                          ))}
+                        </span>,
+                      ],
+                    ]}
+                    header={[
+                      <span>Address of staker</span>,
+                      <span>Amount Staked</span>,
+                    ]}
+                    justifyCellItems="center"
+                    isColumnSortable={[false, true]}
+                    maxPages={2}
+                    onRowClick={function noRefCheck() {}}
+                    pageSize={3}
+                  />
+                ) : (
+                  <div></div>
+                )}
               </div>
             </div>
           ) : (

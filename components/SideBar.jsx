@@ -46,6 +46,9 @@ export default function SideBar() {
       //console.log(stakeAddressArray);
     }
   };
+  const handleClick = (urlinput) => {
+    router.push(urlinput);
+  };
 
   const {
     runContractFunction: createStakeContract,
@@ -73,7 +76,7 @@ export default function SideBar() {
       message: "Created new stake contract",
       title: "Transaction Notification",
       position: "topR",
-      icon: "bell",
+      //icon: "bell",
     });
   };
 
@@ -84,19 +87,16 @@ export default function SideBar() {
   };
 
   useEffect(() => {
-    const load = async () => {
-      await loadContract(addressses);
-    };
     if (isAuthenticated || isWeb3Enabled) {
-      load();
+      loadContract(addressses);
     } else {
       login();
     }
-  }, [isAuthenticated, isWeb3Enabled, ]);
+  }, [isAuthenticated, isWeb3Enabled]);
   return (
     <>
-      <div className="flex mt-24">
-        <div className="w-96 h-screen border-r border-black p-10">
+      <div className="flex mt-24 h-screen">
+        <div className="w-96 h-full border-r border-black p-10">
           <Button
             style={{ marginTop: "20px" }}
             text={
@@ -129,9 +129,16 @@ export default function SideBar() {
             {isAuthenticated || isWeb3Enabled ? (
               <div className="p-3 pt-5">
                 {stakeContract?.map((address) => (
-                  <div key={address}>
-                    <Link className="p-2" href={`/stake-contract/${address}`}>
-                      <a className="text-xl font-bold hover:text-sky-900">{address.slice(0,10)}....{address.slice(32,42)}</a>
+                  <div className="p-2" key={address}>
+                    <Link href={`/stake-contract/${address}`}>
+                      <a
+                        onClick={() =>
+                          handleClick(`/stake-contract/${address}`)
+                        }
+                        className="text-xl font-bold hover:text-sky-900"
+                      >
+                        {address.slice(0, 10)}....{address.slice(32, 42)}
+                      </a>
                     </Link>
                   </div>
                 ))}
