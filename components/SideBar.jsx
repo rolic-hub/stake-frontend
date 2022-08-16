@@ -29,11 +29,13 @@ export default function SideBar() {
       functionName: "getNoofStakers",
     });
     let stakeAddressArray = [];
+
     const noOfStakeAddress = getNoofStakeAddress.toString();
     for (let index = 0; index < noOfStakeAddress; index++) {
+
       const stakeAddresses = await Moralis.executeFunction({
         abi: Abi.abi,
-        contractAddress: stakeFactoryAddress, //
+        contractAddress: stakeFactoryAddress,
         functionName: "getStakeAddresses",
         params: {
           _index: index,
@@ -43,7 +45,7 @@ export default function SideBar() {
       const stakeAddressB = stakeAddresses.toString();
       stakeAddressArray.push(stakeAddressB);
       setStakeContract(stakeAddressArray);
-      //console.log(stakeAddressArray);
+     
     }
   };
   const handleClick = (urlinput) => {
