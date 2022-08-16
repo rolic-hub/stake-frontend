@@ -94,7 +94,7 @@ export default function SideBar() {
     } else {
       login();
     }
-  }, [isAuthenticated, isWeb3Enabled]);
+  }, [isAuthenticated, isWeb3Enabled, loadContract, login, addressses]);
   return (
     <>
       <div className="flex mt-24 h-screen">
@@ -130,7 +130,7 @@ export default function SideBar() {
             </h2>
             {isAuthenticated || isWeb3Enabled ? (
               <div className="p-3 pt-5">
-                {stakeContract?.map((address) => (
+                {stakeContract.map((address) => (
                   <div className="p-2" key={address}>
                     <Link href={`/stake-contract/${address}`}>
                       <a

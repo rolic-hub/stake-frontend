@@ -199,15 +199,21 @@ export default function Contract() {
     }
   };
   const moveBack = () => {
-    router.push('/')
-  }
+    router.push("/");
+  };
 
   useEffect(() => {
     if (isAuthenticated || isWeb3Enabled) {
       listOfStakers(contractAddress);
       viewFunctionResults();
     }
-  }, [isAuthenticated, isWeb3Enabled]);
+  }, [
+    isAuthenticated,
+    isWeb3Enabled,
+    viewFunctionResults,
+    listOfStakers,
+    contractAddress,
+  ]);
   useEffect(() => {
     stateOfstake();
   }, [stakeSet]);
@@ -220,8 +226,12 @@ export default function Contract() {
         <div
           className="flex h-screen w-2/3 ml-auto"
           style={{ marginTop: "-870px" }}
-        >  
-          <ArrowCircleLeft onClick={moveBack} style={{marginTop:"70px"}} fontSize="50px" />
+        >
+          <ArrowCircleLeft
+            onClick={moveBack}
+            style={{ marginTop: "70px" }}
+            fontSize="50px"
+          />
           {isAuthenticated || isWeb3Enabled ? (
             <div className="mt-28 text-center pl-24 pr-24">
               <p className={cssStakestate}>{stakeApp}</p>
@@ -299,7 +309,7 @@ export default function Contract() {
                       [
                         <span>
                           {stakersN.map((address) => (
-                            <p className="flex p-3 ">
+                            <p key={address} className="flex p-3 ">
                               <Blockie seed={address} />
                               <p className="ml-4">
                                 {address.slice(0, 5)}...{address.slice(37, 42)}
@@ -309,7 +319,7 @@ export default function Contract() {
                         </span>,
                         <span>
                           {stakersBalance.map((balance) => (
-                            <p className="p-3">
+                            <p key={balance} className="p-3">
                               {ethers.utils.formatUnits(balance, 18)}
                             </p>
                           ))}
