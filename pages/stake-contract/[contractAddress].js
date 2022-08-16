@@ -83,32 +83,33 @@ export default function Contract() {
 
       const stakerA = staker.toString();
       if (stakersArray.includes(stakerA)) {
-        console.log("already added");
+       // console.log("already added");
       } else {
         stakersArray.push(stakerA);
       }
-
-      setStakersN(stakersArray);
-      let balanceArray = [];
-
-      stakersArray.map(async (element) => {
-        const balanceStaker = await Moralis.executeFunction({
-          functionName: "getStakersBalance",
-          contractAddress: contractA,
-          abi: AbiStake.abi,
-          params: {
-            _staker: element,
-          },
-        });
-        const balanceString = balanceStaker.toString();
-        if (balanceArray.includes(balanceString)) {
-          console.log("already added");
-        } else {
-          balanceArray.push(balanceString);
-        }
-      });
-      setStakersbalance(balanceArray);
     }
+    setStakersN(stakersArray);
+
+    let balanceArray = [];
+
+    stakersArray.forEach(async (element) => {
+      const balanceStaker = await Moralis.executeFunction({
+        functionName: "getStakersBalance",
+        contractAddress: contractA,
+        abi: AbiStake.abi,
+        params: {
+          _staker: element,
+        },
+      });
+      const balanceString = balanceStaker.toString();
+      if (balanceArray.includes(balanceString)) {
+       // console.log("already added");
+      } else {
+        balanceArray.push(balanceString);
+      }
+    });
+    //console.log(balanceArray)
+    setStakersbalance(balanceArray);
   };
 
   const { runContractFunction: timeLeft } = useWeb3Contract({
@@ -207,13 +208,7 @@ export default function Contract() {
       listOfStakers(contractAddress);
       viewFunctionResults();
     }
-  }, [
-    isAuthenticated,
-    isWeb3Enabled,
-    viewFunctionResults,
-    listOfStakers,
-    contractAddress,
-  ]);
+  }, [isAuthenticated, isWeb3Enabled, contractAddress]);
   useEffect(() => {
     stateOfstake();
   }, [stakeSet]);
@@ -320,7 +315,7 @@ export default function Contract() {
                         <span>
                           {stakersBalance.map((balance) => (
                             <p key={balance} className="p-3">
-                              {ethers.utils.formatUnits(balance, 18)}
+                              {ethers.utils.formatUnits(balance, 18)} Eth
                             </p>
                           ))}
                         </span>,

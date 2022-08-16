@@ -31,8 +31,8 @@ export default function SideBar() {
     let stakeAddressArray = [];
 
     const noOfStakeAddress = getNoofStakeAddress.toString();
+    //console.log(noOfStakeAddress)
     for (let index = 0; index < noOfStakeAddress; index++) {
-
       const stakeAddresses = await Moralis.executeFunction({
         abi: Abi.abi,
         contractAddress: stakeFactoryAddress,
@@ -44,9 +44,10 @@ export default function SideBar() {
 
       const stakeAddressB = stakeAddresses.toString();
       stakeAddressArray.push(stakeAddressB);
-      setStakeContract(stakeAddressArray);
-     
+
+      console.log(stakeAddressArray);
     }
+    setStakeContract(stakeAddressArray);
   };
   const handleClick = (urlinput) => {
     router.push(urlinput);
@@ -94,7 +95,7 @@ export default function SideBar() {
     } else {
       login();
     }
-  }, [isAuthenticated, isWeb3Enabled, loadContract, login, addressses]);
+  }, [isAuthenticated, isWeb3Enabled, addressses]);
   return (
     <>
       <div className="flex mt-24 h-screen">
