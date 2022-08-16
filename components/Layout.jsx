@@ -2,9 +2,7 @@
 import SideBar from "./SideBar";
 import {Minus} from '@web3uikit/icons'
 import Image from 'next/image'
-import description from "../assests/description.png"
-
-
+import description from "../src/assests/description.png"
 
 
 export default function Layout() {
