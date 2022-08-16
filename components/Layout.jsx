@@ -18,9 +18,12 @@ export default function Layout() {
         <div className="mt-16 text-center pl-24 pr-24">
           <h1 className="text-2xl p-7 font-bold">About</h1>
           <p>
-            The Stake App is a simple staking protocol currently on the ethereum
+            The Stake App is a simple staking protocol currently on the ethereum 
             blockchain it allows users to stake their Eth and gain interest
             based on if the total staked is above or equal to the threshold.
+            connect your wallet and deposit to stake.
+            <br></br>
+            Supported chain - hardhat test network
             <br></br>
             <br></br>
             Note- Compatability with other blockchains coming soon
