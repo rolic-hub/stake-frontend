@@ -9,20 +9,22 @@ export default function Layout() {
   return (
     <div>
       <SideBar />
+      <div className="h-11">
+
+      </div>
       <div
         className="flex h-screen lg:w-2/3 md:w-1/2 ml-auto mr-16 "
         style={{ marginTop: "-870px" }}
       >
-        <div className="mt-16 text-center pl-24 pr-24">
-          <h1 className="text-2xl p-7 font-bold">About</h1>
+        <div className="lg:mt-16 md:mt-24 text-center pl-24 pr-24 absolute">
+          <h1 className="text-2xl p-2 font-bold">About</h1>
           <p>
-            The Stake App is a simple staking protocol currently on the ethereum 
+            The Staketh is a simple staking protocol currently on the ethereum 
             blockchain it allows users to stake their Eth and gain interest
             based on if the total staked is above or equal to the threshold.
             connect your wallet and deposit to stake.
             <br></br>
             Supported chain - hardhat test network
-            <br></br>
             <br></br>
             Note- Compatability with other blockchains coming soon
           </p>
@@ -40,17 +42,15 @@ export default function Layout() {
            Then you should see the stake contract page as below
             </p>
            <Image className="p-4" src={description} alt="stake-page" height={900}/>
-           <p className="ml-16 p-3">
-            The first component tells us if the stake is open or closed <br></br>
-            The next one tells us how long before the stake is closed
+           <p className="ml-5 p-3">
+            The first component tells us if the stake is open or closed,
+            the next one tells us how long before the stake is closed
             <br></br>
-            The next tells us the total amount staked against the threshold set 
-            <br></br>
-            Next the deposit button - input the amount you want to stake and click deposit 
+            Then we have the total amount staked against the threshold set, 
+            followed by the deposit button, first input the amount you want to stake before clicking the deposit 
             <br></br>
             Once the time limit has expired click the withdraw function 
-            to withdraw your Eth
-            <br></br>
+            to withdraw your Eth,
             Lastly we have the table displaying the stakers address and amount staked
            </p>
           </div>
