@@ -3,7 +3,9 @@ import { Button } from "@web3uikit/core";
 import UAuth from "@uauth/js";
 import { useMoralis } from "react-moralis";
 import Image from "next/image";
-import picture  from "../assests/default-small.png";
+import picture from "../assests/default-small.png";
+//import { Metamask } from "@web3uikit/icons";
+import metamaskP from "../assests/download.png";
 
 export default function Navbar() {
   const [isMetamask, setIsMetamask] = useState(false);
@@ -69,7 +71,12 @@ export default function Navbar() {
               theme="colored"
               color="green"
               onClick={metamask}
-              text="Login with Metamask"
+              text={
+                <p className="flex flex-row">
+                  <Image src={metamaskP} height="30" width="30" alt="metamask" />
+                  Login with Metamask
+                </p>
+              }
             />
             <p className="text-2xl text-bold ml-3 mr-3">or</p>
             <Button
@@ -80,7 +87,7 @@ export default function Navbar() {
               onClick={unstoppable}
               text={
                 <p className="flex flex-row">
-                  <Image src={picture} height="30" width="30" alt="ud" />   Login
+                  <Image src={picture} height="30" width="30" alt="ud" /> Login
                   with Unstoppable
                 </p>
               }
