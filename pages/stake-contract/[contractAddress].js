@@ -312,7 +312,7 @@ export default function Contract() {
                     columnsConfig="250px 1fr"
                     data={[
                       [
-                        <span>
+                        <span key={7}>
                           {stakersN.map((address) => (
                             <p key={address} className="flex p-3 ">
                               <Blockie seed={address} />
@@ -322,7 +322,7 @@ export default function Contract() {
                             </p>
                           ))}
                         </span>,
-                        <span>
+                        <span key={6}>
                           {stakersBalance.map((balance) => (
                             <p key={balance} className="p-3">
                               {ethers.utils.formatUnits(balance, 18)} Eth
@@ -332,8 +332,8 @@ export default function Contract() {
                       ],
                     ]}
                     header={[
-                      <span>Address of staker</span>,
-                      <span>Amount Staked</span>,
+                      <span key={1}>Address of staker</span>,
+                      <span key={2}>Amount Staked</span>,
                     ]}
                     justifyCellItems="center"
                     isColumnSortable={[false, true]}
