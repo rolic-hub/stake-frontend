@@ -15,7 +15,7 @@ export default function Navbar() {
 
   const uauth = new UAuth({
     clientID: "fa1d4ab6-4d2e-420c-9db9-62035e081b8e",
-    redirectUri: "http://localhost:3000",
+    redirectUri: "https://stake-frontend-rolic-hub.vercel.app",
     scope: "openid wallet email:optional",
   });
 
