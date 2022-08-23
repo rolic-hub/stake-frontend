@@ -24,7 +24,7 @@ export default function Layout() {
             based on if the total staked is above or equal to the threshold.
             connect your wallet and deposit to stake.
             <br></br>
-            Supported chain - hardhat test network
+            Supported chain - rinkeby test net
             <br></br>
             Note- Compatability with other blockchains coming soon
           </p>

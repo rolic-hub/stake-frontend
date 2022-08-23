@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Button } from "@web3uikit/core";
-import { CgFormatSlash } from "react-icons/cg";
 import UAuth from "@uauth/js";
 import { useMoralis } from "react-moralis";
+import Image from "next/image";
+import picture  from "../assests/default-small.png";
 
 export default function Navbar() {
   const [isMetamask, setIsMetamask] = useState(false);
@@ -27,8 +28,11 @@ export default function Navbar() {
       const authorization = await uauth.loginWithPopup();
       setAccount(authorization.idToken.wallet_address);
       console.log(authorization);
-      account = authorization.idToken.wallet_address
-      window.localStorage.setItem("unstoppable", authorization.idToken.wallet_address)
+      account = authorization.idToken.wallet_address;
+      window.localStorage.setItem(
+        "unstoppable",
+        authorization.idToken.wallet_address
+      );
     } catch (error) {
       console.error(error);
     }
@@ -74,7 +78,12 @@ export default function Navbar() {
               color="green"
               style={{ marginRight: "150px" }}
               onClick={unstoppable}
-              text="Login with Unstoppable"
+              text={
+                <p className="flex flex-row">
+                  <Image src={picture} height="30" width="30" alt="ud" />   Login
+                  with Unstoppable
+                </p>
+              }
             />
           </div>
         )}

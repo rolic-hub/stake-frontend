@@ -63,25 +63,21 @@ export default function Contract() {
     functionName: "getAmountStaked",
     params: {},
   });
-  const listOfStakers = async (contractA) => {
+  const listOfStakers = async (contractA, ethprovider) => {
     //const options = {abi: AbiStake.abi,  }
-    const stakeLenght = await Moralis.executeFunction({
-      functionName: "getStakelength",
-      contractAddress: contractA,
-      abi: AbiStake.abi,
-    });
+    const provider = new ethers.providers.Web3Provider(ethprovider);
+    const signer = await provider.getSigner();
+    const contractInstance = new ethers.Contract(
+      contractA,
+      AbiStake.abi,
+      signer
+    );
+    const stakeLenght = await contractInstance.getStakelength();
     const stakers = stakeLenght.toString();
     let stakersArray = [];
 
     for (let index = 0; index < stakers; index++) {
-      const staker = await Moralis.executeFunction({
-        functionName: "getStaker",
-        contractAddress: contractA,
-        abi: AbiStake.abi,
-        params: {
-          _index: index,
-        },
-      });
+      const staker = await contractInstance.getStaker(index);
 
       const stakerA = staker.toString();
       if (stakersArray.includes(stakerA)) {
@@ -95,14 +91,7 @@ export default function Contract() {
     let balanceArray = [];
 
     stakersArray.forEach(async (element) => {
-      const balanceStaker = await Moralis.executeFunction({
-        functionName: "getStakersBalance",
-        contractAddress: contractA,
-        abi: AbiStake.abi,
-        params: {
-          _staker: element,
-        },
-      });
+      const balanceStaker = await contractInstance.getStakersBalance(element);
       const balanceString = balanceStaker.toString();
       if (balanceArray.includes(balanceString)) {
         // console.log("already added");
@@ -154,24 +143,25 @@ export default function Contract() {
   const viewFunctionResults = async () => {
     const getThreshold = (await threshold()).toString();
     const getTotalstake = (await totalStake()).toString();
-
+    const deadline = (await timeLeft()).toString();
     const _stakeStake = (await stakeState()).toString();
 
     setThreshold(getThreshold);
     setTotalstaked(getTotalstake);
     setStakeset(_stakeStake);
     stateOfstake();
+    setTimer(deadline);
   };
 
   const setTimer = (deadline) => {
-    intervalno = setInterval( async () => {
+    intervalno = setInterval(() => {
       const now = new Date();
       const nowInSeconds = now.getTime();
       const timeR = deadline * 1000;
 
       const finalT = new Date(nowInSeconds + timeR);
 
-      console.log(finalT);
+      //console.log(finalT);
       const finalTseconds = finalT.getTime();
 
       const distance = finalTseconds - nowInSeconds;
@@ -207,7 +197,7 @@ export default function Contract() {
 
   useEffect(() => {
     if (isAuthenticated || isWeb3Enabled) {
-      listOfStakers(contractAddress);
+      listOfStakers(contractAddress, window.ethereum);
       viewFunctionResults();
     }
   }, [isAuthenticated, isWeb3Enabled, contractAddress]);
@@ -217,17 +207,16 @@ export default function Contract() {
     stateOfstake();
   }, [stakeSet]);
 
-  useEffect(() => {
-    const startTimer = async() => {
-      const deadline = (await timeLeft()).toString();
-      setTimer(deadline)
-    }
-    // window.localStorage.setItem("deadline",)
-    // let deadline;
-    // deadline = window.localStorage.getItem("deadline")
-   startTimer()
+  // useEffect(() => {
+  //   const startTimer = async() => {
+  //     const deadline = await timeLeft().catch((error) => {
+  //       console.log(error)
+  //     })
+  //     setTimer(deadline)
+  //   }
+  //  startTimer()
 
-  }, [])
+  // }, [])
 
   return (
     <div>
@@ -246,13 +235,18 @@ export default function Contract() {
           {isAuthenticated || isWeb3Enabled || unstoppable !== null ? (
             <div className="mt-28 text-center pl-24 pr-24">
               <p className={cssStakestate}>{stakeApp}</p>
-              <p className="mt-8 font-bold">
-                <span>
-                  {deadlineT.dy}d {deadlineT.hr}hr {deadlineT.mins}m{" "}
-                  {deadlineT.secs}s
-                </span>{" "}
-                Left
-              </p>
+              {stakeSet == 0 ? (
+                <p></p>
+              ) : (
+                <p className="mt-8 font-bold">
+                  <span>
+                    {deadlineT.dy}d {deadlineT.hr}hr {deadlineT.mins}m{" "}
+                    {deadlineT.secs}s
+                  </span>{" "}
+                  Left
+                </p>
+              )}
+
               <p className="mt-8 ml-4 text-xl">
                 {ethers.utils.formatUnits(totalStaked, 18)} Eth /{" "}
                 {ethers.utils.formatUnits(thresholdA, 18)} Eth
@@ -348,7 +342,7 @@ export default function Contract() {
                     pageSize={3}
                   />
                 ) : (
-                  <div></div>
+                  <div className="text-xl mt-8 ml-4">No Stake has been made</div>
                 )}
               </div>
             </div>
