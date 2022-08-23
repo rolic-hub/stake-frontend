@@ -11,6 +11,7 @@ export default function Navbar() {
   const [isMetamask, setIsMetamask] = useState(false);
   const [isUdLogin, setIsUdLogin] = useState(false);
   const [accountAddress, setAccount] = useState(null);
+  const [username, setUsername] = useState("")
   const { account, enableWeb3, isWeb3Enabled, Moralis } = useMoralis();
 
   const uauth = new UAuth({
@@ -29,6 +30,7 @@ export default function Navbar() {
       setIsUdLogin(true);
       const authorization = await uauth.loginWithPopup();
       setAccount(authorization.idToken.wallet_address);
+      setUsername(authorization.idToken.sub)
       console.log(authorization);
       account = authorization.idToken.wallet_address;
       window.localStorage.setItem(
@@ -59,7 +61,7 @@ export default function Navbar() {
             )}
             {isUdLogin && (
               <button className="bg-green-700 text-white p-2" onClick={logout}>
-                {accountAddress.slice(0, 7)}...{accountAddress.slice(35, 42)}
+                {accountAddress.slice(0, 7)}...{accountAddress.slice(35, 42)}  |  {username}
               </button>
             )}
           </div>
