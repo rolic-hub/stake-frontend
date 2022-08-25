@@ -9,7 +9,7 @@ export default function Layout() {
   return (
     <div>
       <SideBar />
-      <div className="h-4">
+      <div className="h-6">
 
       </div>
       <div
