@@ -6,17 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next export"
   },
   "dependencies": {
+    "@uauth/js": "^2.3.0",
     "@web3uikit/core": "^0.1.5",
     "@web3uikit/icons": "^0.1.5",
     "@web3uikit/web3": "^0.1.5",
+    "ethers": "^5.7.0",
     "moment": "^2.29.4",
     "moralis-v1": "^1.11.0",
     "next": "12.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.4.0",
     "react-moralis": "^1.4.1"
   },
   "devDependencies": {

@@ -5,47 +5,42 @@ import { useWeb3Contract, useMoralis } from "react-moralis";
 import Abi from "../constants/Abi/stakeFactory.json";
 import { contractAdrresses } from "../constants/contractAddresses/stakeFactory";
 import { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import { sendEtagResponse } from "next/dist/server/send-payload";
 
 export default function SideBar() {
   const [stakeContract, setStakeContract] = useState([]);
+  const [unstoppable, setUnstoppable] = useState(null);
   const {
     isAuthenticated,
     isWeb3Enabled,
+    enableWeb3,
     authenticate,
     Moralis,
     chainId: chainIdHex,
   } = useMoralis();
   const chainId = parseInt(chainIdHex);
-  const addressses = contractAdrresses[31337].contract;
+  const addressses = contractAdrresses[4].contract;
 
   const dispatch = useNotification();
   const router = useRouter();
 
-  const loadContract = async (stakeFactoryAddress) => {
-    //await Moralis.authenticate;
-    const getNoofStakeAddress = await Moralis.executeFunction({
-      abi: Abi.abi,
-      contractAddress: stakeFactoryAddress, //
-      functionName: "getNoofStakers",
-    });
+  const loadContract = async (stakeFactoryAddress, ethprovider) => {
+    const provider = new ethers.providers.Web3Provider(ethprovider)
+    const signer = await provider.getSigner()
+   const contractInstance = new ethers.Contract(stakeFactoryAddress, Abi.abi, signer)
+   
+    const getNoofStakeAddress = await contractInstance.getNoofStakers()
     let stakeAddressArray = [];
 
     const noOfStakeAddress = getNoofStakeAddress.toString();
-    //console.log(noOfStakeAddress)
+  
     for (let index = 0; index < noOfStakeAddress; index++) {
-      const stakeAddresses = await Moralis.executeFunction({
-        abi: Abi.abi,
-        contractAddress: stakeFactoryAddress,
-        functionName: "getStakeAddresses",
-        params: {
-          _index: index,
-        },
-      });
-
+    const stakeAddresses = await contractInstance.getStakeAddresses(index)
       const stakeAddressB = stakeAddresses.toString();
       stakeAddressArray.push(stakeAddressB);
 
-      console.log(stakeAddressArray);
+      //console.log(stakeAddressArray);
     }
     setStakeContract(stakeAddressArray);
   };
@@ -90,10 +85,10 @@ export default function SideBar() {
   };
 
   useEffect(() => {
-    if (isAuthenticated || isWeb3Enabled) {
-      loadContract(addressses);
-    } else {
-      login();
+    const unstoppable = localStorage.getItem("unstoppable");
+    setUnstoppable(unstoppable);
+    if (isAuthenticated || isWeb3Enabled || unstoppable !== null) {
+      loadContract(addressses, window.ethereum);
     }
   }, [isAuthenticated, isWeb3Enabled, addressses]);
   return (
@@ -129,7 +124,7 @@ export default function SideBar() {
             >
               Deployed Stake Contracts
             </h2>
-            {isAuthenticated || isWeb3Enabled ? (
+            {isAuthenticated || isWeb3Enabled || unstoppable !== null ? (
               <div className="p-3 pt-5">
                 {stakeContract.map((address) => (
                   <div className="p-2" key={address}>
